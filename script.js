@@ -70,6 +70,32 @@ document.querySelector('.nav__links').addEventListener('click', function(e) { //
   }
 });
 
+// Tabbed component
+const tabs = document.querySelectorAll('.operations__tab'); //Selecting all tabs
+const tabsContainer = document.querySelector('.operations__tab-container'); //Selecting all tabs container
+const tabsContent = document.querySelectorAll('.operations__content'); //Selecting all tabs content
+
+tabsContainer.addEventListener('click', function(e) { //Use a event mouseenter Listener
+  const clicked = e.target.closest('.operations__tab'); //Use Select the closest parent element with class operations__tab
+
+  console.log(clicked); //Show mouse click element
+
+  //Guard clause
+  if(!clicked) return; //To prevent error when click on empty space
+
+  //Remove active classes
+  tabs.forEach(t => t.classList.remove('operations__tab--active')); //Remove active Tab
+  tabsContent.forEach(c => c.classList.remove('operations__content--active')); //Remove active content
+
+  //Active tab
+  clicked.classList.add('operations__tab--active'); //Add active Tab
+
+  //Activate content area
+  document.querySelector(`.operations__content--${clicked.dataset.tab}`).classList.add('operations__content--active'); //Add active content
+
+});
+
+
 
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
@@ -107,4 +133,34 @@ document.querySelector('.nav').addEventListener('click', function(e) { //Use a e
   console.log('NAV', e.target, e.currentTarget);
 });
 */
- 
+ /*
+const h1 = document.querySelector('h1');
+
+//Going downwards: child
+console.log(h1.querySelectorAll('.highlight')); //Selecting all elements with class highlight
+console.log(h1.childNodes); //Selecting all elements with class highlight
+console.log(h1.children); //Selecting all elements with class highlight
+h1.firstElementChild.style.color = 'white'; //Selecting first element with class highlight
+h1.lastElementChild.style.color = 'orangered'; //Selecting last element with class highlight
+
+//Going upwards: parents
+console.log(h1.parentNode); //Selecting parent element
+console.log(h1.parentElement); //Selecting parent element
+
+h1.closest('.header').style.background = 'var(--gradient-secondary)'; //Selecting closest element with class header
+
+h1.closest('h1').style.background = 'var(--gradient-primary)'; //Selecting closest element with class header
+
+//Going sideways: siblings
+console.log(h1.previousElementSibling); //Selecting previous element with class highlight
+console.log(h1.nextElementSibling); //Selecting next element with class highlight
+
+console.log(h1.previousSibling); //Selecting previous element with class highlight
+console.log(h1.nextSibling); //Selecting next element with class highlight
+
+console.log(h1.parentElement.children); //Selecting all children elements of parent element
+[...h1.parentElement.children].forEach(function(el) { //Selecting all children elements of parent element
+  if(el !== h1) el.style.transform = 'scale(0.5)'; //Selecting all children elements of parent element
+});
+*/
+
