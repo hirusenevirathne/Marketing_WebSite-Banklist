@@ -11,6 +11,10 @@ const header = document.querySelector('.header');
 const message = document.createElement('div'); //crete a new DoM element but its not use in DOM yet
 const btnScrollTo = document.querySelector('.btn--scroll-to'); //Selecting Lord button
 const section1 = document.querySelector('#section--1'); //Selecting Lording elements by ID
+const tabs = document.querySelectorAll('.operations__tab'); //Selecting all tabs
+const tabsContainer = document.querySelector('.operations__tab-container'); //Selecting all tabs container
+const tabsContent = document.querySelectorAll('.operations__content'); //Selecting all tabs content
+const nav = document.querySelector('.nav'); //Selecting all tabs content in nav bar
 
 const openModal = function (e) {
   e.preventDefault();
@@ -70,15 +74,13 @@ document.querySelector('.nav__links').addEventListener('click', function(e) { //
   }
 });
 
+
+
 // Tabbed component
-const tabs = document.querySelectorAll('.operations__tab'); //Selecting all tabs
-const tabsContainer = document.querySelector('.operations__tab-container'); //Selecting all tabs container
-const tabsContent = document.querySelectorAll('.operations__content'); //Selecting all tabs content
 
 tabsContainer.addEventListener('click', function(e) { //Use a event mouseenter Listener
   const clicked = e.target.closest('.operations__tab'); //Use Select the closest parent element with class operations__tab
-
-  console.log(clicked); //Show mouse click element
+  //console.log(clicked); //Show mouse click element
 
   //Guard clause
   if(!clicked) return; //To prevent error when click on empty space
@@ -95,6 +97,49 @@ tabsContainer.addEventListener('click', function(e) { //Use a event mouseenter L
 
 });
 
+//Nav Bar Fade Animation
+
+//create a function to Change Opacity
+const handleHover = function(e, opacity) { //Create a funtion to handle hover 
+  if (e.target.classList.contains('nav__link')){ //filter the event target
+    const link = e.target; //Select the target links from pereaent element
+    const siblings = link.closest('.nav').querySelectorAll('.nav__link'); //Select the event target from pereaent element
+    const logo = link.closest('.nav').querySelector('img'); //Select the Logo from pereaent element
+    
+    
+
+    siblings.forEach(el => { //Select the event target from pereaent element
+      if(el !== link) el.style.opacity = this; //Select link element is not equal to event target change opacity
+    });
+    logo.style.opacity = this; //Change Logo opacity
+  }
+};
+
+//Passing "argument" into handler and change opacity
+nav.addEventListener('mouseover', handleHover.bind(0.5)); //Trigger when mouse over the elemnt and call the function and change opacity
+nav.addEventListener('mouseout', handleHover.bind(1)); //Trigger when mouse Out the elemnt and call the function and change opacity
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -108,8 +153,6 @@ const alertH1 = function(e) {//Use a event mouseenter Listener
 h1.addEventListener('mouseenter', alertH1); //Use a event mouseenter Listener
 setTimeout(() => h1.removeEventListener('mouseenter', alertH1), 3000); //Remove event mouseenter Listener After 3s  
 */
-
-
 
 /*
 // rgb(255,255,255)
