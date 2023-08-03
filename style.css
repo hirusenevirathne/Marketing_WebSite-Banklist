@@ -124,6 +124,7 @@
     z-index: 100;
   }
   
+
   /* nav and stickly class at the same time */
   .nav.sticky {
     position: fixed;
