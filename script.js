@@ -137,9 +137,25 @@ headerObserver.observe(header); //Observe header element
 
 
 
+//Reveal sections: Intersection Observer API
+const allSections = document.querySelectorAll('.section'); //Selecting all sections
 
+const revealSection = function(entries, observer) { //Create a new observer callback
+  const [entry] = entries; //Selecting the first element of the array
 
+  if (!entry.isIntersecting) return; //Guard clause
 
+  entry.target.classList.remove('section--hidden'); //Remove hidden class to Selected Correct section
+  observer.unobserve(entry.target); //Stop observing the section for performance
+}
+
+const sectionObserver = new IntersectionObserver(revealSection, {root: null, threshold: 0.15}); //Create a new Intersection Observer
+
+allSections.forEach(function(section) { //Selecting all sections
+  sectionObserver.observe(section); //Observe all sections
+  section.classList.add('section--hidden'); //Add hidden class to all sections
+});
+ 
 
 
 
