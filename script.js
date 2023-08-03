@@ -158,6 +158,108 @@ allSections.forEach(function(section) { //Selecting all sections
  
 
 
+//Lazy loading images: Intersection Observer API
+const imgTargets = document.querySelectorAll('img[data-src]'); //Selecting all images with data-src attribute
+
+const loadImg = function(entries, observer) { //Create a new observer callback
+  const [entry] = entries; //Selecting the first element of the array
+
+  if (!entry.isIntersecting) return; //Guard clause
+
+  //Replace src with data-src
+  entry.target.src = entry.target.dataset.src; //Replace src with data-src
+  entry.target.addEventListener('load', function() { //Add event listener to load image and remove blur After load Image
+    entry.target.classList.remove('lazy-img'); //Remove lazy-img class to image
+  });
+};
+
+const imgObserver = new IntersectionObserver(loadImg, {root: null, threshold: 0, rootMargin: '200px'}); //Create a new Intersection Observer Before 200px
+
+imgTargets.forEach(img => imgObserver.observe(img)); //Observe all images
+
+
+////////////////////////////////////////////////////////////////////////
+//Slider
+
+const slider = function() { //Create a new slider function
+  const slides = document.querySelectorAll('.slide'); //Selecting all slides
+  const btnLeft = document.querySelector('.slider__btn--left'); //Selecting left button
+  const btnRight = document.querySelector('.slider__btn--right'); //Selecting right button
+  const dotContainer = document.querySelector('.dots'); //Selecting dots container
+
+  let curSlide = 0; //Selecting current slide
+  const maxSlide = slides.length; //Selecting max slide
+
+  //Functions
+  const createDots = function() { //Create a new dots function
+    slides.forEach(function(_, i) { //Selecting all slides
+      dotContainer.insertAdjacentHTML('beforeend', `<button class="dots__dot" data-slide="${i}"></button>`); //Create a new dots
+    });
+  };
+  
+  const activateDot = function(slide) { //Create a new activateDot function
+    document.querySelectorAll('.dots__dot').forEach(dot => dot.classList.remove('dots__dot--active')); //Selecting all dots and remove active class
+    document.querySelector(`.dots__dot[data-slide="${slide}"]`).classList.add('dots__dot--active'); //Selecting current dot and add active class
+  };
+
+  const goToSlide = function(slide) { //Create a new goToSlide function
+    slides.forEach((s,i) => s.style.transform = `transLateX(${100*(i-slide)}%)`); //transform Selected slides in Vertical line and move to the left or right
+  };
+
+  //Next slide
+  const nextSlide = function() { //Create a new nextSlide function
+    if (curSlide === maxSlide - 1) { //If current slide is equal to max slide
+      curSlide = 0; //Selecting current slide
+    }else {
+      curSlide++; //Incresing current slide
+    }
+    goToSlide(curSlide); //Call goToSlide function
+    activateDot(curSlide); //Call activateDot function
+  };
+
+  //Previous slide
+  const prevSlide = function() { //Create a new prevSlide function
+    if (curSlide === 0) { //If current slide is equal to 0
+      curSlide = maxSlide - 1; //Selecting current slide
+    }else {
+      curSlide--; //Decresing current slide
+    }
+    goToSlide(curSlide); //Call goToSlide function
+    activateDot(curSlide); //Call activateDot function
+  };
+
+
+  //initial function
+  const init = function() { //Create a new initial function for setup all first
+    goToSlide(0); //Call goToSlide function and set current slide to 0
+    createDots(); //Call createDots function and create all dots
+    activateDot(0); //Call activateDot function and set current dot to 0
+  };
+  init(); //Call initial function
+
+  //Event handlers
+  btnRight.addEventListener('click', nextSlide); //Add event listener to right button and call nextSlide function
+  btnLeft.addEventListener('click', prevSlide); //Add event listener to left button and call prevSlide function
+
+  document.addEventListener('keydown', function(e) { //Add event listener to keydown and call nextSlide function
+    if (e.key === 'ArrowLeft') prevSlide(); //If key is equal to ArrowLeft call prevSlide function
+    e.key === 'ArrowRight' && nextSlide(); //If key is equal to ArrowRight call nextSlide function
+  });
+
+  dotContainer.addEventListener('click', function(e) { //Add event listener to dots container and call nextSlide function
+    if (e.target.classList.contains('dots__dot')) { //If target contain dots__dot class in Perent element
+      const {slide} = e.target.dataset; //Selecting slide from data-slide
+      goToSlide(slide); //Call goToSlide function and set current slide to slide
+      activateDot(slide); //Call activateDot function and set current dot to slide
+    }
+  });
+};
+slider(); //Call slider function
+
+
+
+
+
 
 
 ////////////////////////////////////////////////////////////////////////
