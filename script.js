@@ -7,7 +7,7 @@ const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
-const header = document.querySelector('.header');
+const header = document.querySelector('.header'); //Selecting header element
 const message = document.createElement('div'); //crete a new DoM element but its not use in DOM yet
 const btnScrollTo = document.querySelector('.btn--scroll-to'); //Selecting Lord button
 const section1 = document.querySelector('#section--1'); //Selecting Lording elements by ID
@@ -100,7 +100,7 @@ tabsContainer.addEventListener('click', function(e) { //Use a event mouseenter L
 //Nav Bar Fade Animation
 
 //create a function to Change Opacity
-const handleHover = function(e, opacity) { //Create a funtion to handle hover 
+const handleHover = function(e) { //Create a funtion to handle hover 
   if (e.target.classList.contains('nav__link')){ //filter the event target
     const link = e.target; //Select the target links from pereaent element
     const siblings = link.closest('.nav').querySelectorAll('.nav__link'); //Select the event target from pereaent element
@@ -121,17 +121,19 @@ nav.addEventListener('mouseout', handleHover.bind(1)); //Trigger when mouse Out 
 
 
 
+//Sticky Navigation: Intersection Observer API
 
+const navHeight = nav.getBoundingClientRect().height; //Selecting nav bar height
 
+const stickyNav = function(entries) { //Create a new observer callback
+  const [entry] = entries; //Selecting the first element of the array
 
+  if (!entry.isIntersecting) nav.classList.add('sticky'); //Add sticky class to nav bar wehen section 1 is out of view
+  else nav.classList.remove('sticky'); //Remove sticky class to nav bar
+};
 
-
-
-
-
-
-
-
+const headerObserver = new IntersectionObserver(stickyNav, {root: null, threshold: 0, rootMargin: `-${navHeight}px`}); //Create a new Intersection Observer
+headerObserver.observe(header); //Observe header element
 
 
 
