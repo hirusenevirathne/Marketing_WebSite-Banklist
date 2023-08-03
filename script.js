@@ -7,10 +7,14 @@ const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
-const header = document.querySelector('.header');
+const header = document.querySelector('.header'); //Selecting header element
 const message = document.createElement('div'); //crete a new DoM element but its not use in DOM yet
 const btnScrollTo = document.querySelector('.btn--scroll-to'); //Selecting Lord button
 const section1 = document.querySelector('#section--1'); //Selecting Lording elements by ID
+const tabs = document.querySelectorAll('.operations__tab'); //Selecting all tabs
+const tabsContainer = document.querySelector('.operations__tab-container'); //Selecting all tabs container
+const tabsContent = document.querySelectorAll('.operations__content'); //Selecting all tabs content
+const nav = document.querySelector('.nav'); //Selecting all tabs content in nav bar
 
 const openModal = function (e) {
   e.preventDefault();
@@ -71,6 +75,75 @@ document.querySelector('.nav__links').addEventListener('click', function(e) { //
 });
 
 
+
+// Tabbed component
+
+tabsContainer.addEventListener('click', function(e) { //Use a event mouseenter Listener
+  const clicked = e.target.closest('.operations__tab'); //Use Select the closest parent element with class operations__tab
+  //console.log(clicked); //Show mouse click element
+
+  //Guard clause
+  if(!clicked) return; //To prevent error when click on empty space
+
+  //Remove active classes
+  tabs.forEach(t => t.classList.remove('operations__tab--active')); //Remove active Tab
+  tabsContent.forEach(c => c.classList.remove('operations__content--active')); //Remove active content
+
+  //Active tab
+  clicked.classList.add('operations__tab--active'); //Add active Tab
+
+  //Activate content area
+  document.querySelector(`.operations__content--${clicked.dataset.tab}`).classList.add('operations__content--active'); //Add active content
+
+});
+
+//Nav Bar Fade Animation
+
+//create a function to Change Opacity
+const handleHover = function(e) { //Create a funtion to handle hover 
+  if (e.target.classList.contains('nav__link')){ //filter the event target
+    const link = e.target; //Select the target links from pereaent element
+    const siblings = link.closest('.nav').querySelectorAll('.nav__link'); //Select the event target from pereaent element
+    const logo = link.closest('.nav').querySelector('img'); //Select the Logo from pereaent element
+    
+    
+
+    siblings.forEach(el => { //Select the event target from pereaent element
+      if(el !== link) el.style.opacity = this; //Select link element is not equal to event target change opacity
+    });
+    logo.style.opacity = this; //Change Logo opacity
+  }
+};
+
+//Passing "argument" into handler and change opacity
+nav.addEventListener('mouseover', handleHover.bind(0.5)); //Trigger when mouse over the elemnt and call the function and change opacity
+nav.addEventListener('mouseout', handleHover.bind(1)); //Trigger when mouse Out the elemnt and call the function and change opacity
+
+
+
+//Sticky Navigation: Intersection Observer API
+
+const navHeight = nav.getBoundingClientRect().height; //Selecting nav bar height
+
+const stickyNav = function(entries) { //Create a new observer callback
+  const [entry] = entries; //Selecting the first element of the array
+
+  if (!entry.isIntersecting) nav.classList.add('sticky'); //Add sticky class to nav bar wehen section 1 is out of view
+  else nav.classList.remove('sticky'); //Remove sticky class to nav bar
+};
+
+const headerObserver = new IntersectionObserver(stickyNav, {root: null, threshold: 0, rootMargin: `-${navHeight}px`}); //Create a new Intersection Observer
+headerObserver.observe(header); //Observe header element
+
+
+
+
+
+
+
+
+
+
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
@@ -82,8 +155,6 @@ const alertH1 = function(e) {//Use a event mouseenter Listener
 h1.addEventListener('mouseenter', alertH1); //Use a event mouseenter Listener
 setTimeout(() => h1.removeEventListener('mouseenter', alertH1), 3000); //Remove event mouseenter Listener After 3s  
 */
-
-
 
 /*
 // rgb(255,255,255)
@@ -107,4 +178,34 @@ document.querySelector('.nav').addEventListener('click', function(e) { //Use a e
   console.log('NAV', e.target, e.currentTarget);
 });
 */
- 
+ /*
+const h1 = document.querySelector('h1');
+
+//Going downwards: child
+console.log(h1.querySelectorAll('.highlight')); //Selecting all elements with class highlight
+console.log(h1.childNodes); //Selecting all elements with class highlight
+console.log(h1.children); //Selecting all elements with class highlight
+h1.firstElementChild.style.color = 'white'; //Selecting first element with class highlight
+h1.lastElementChild.style.color = 'orangered'; //Selecting last element with class highlight
+
+//Going upwards: parents
+console.log(h1.parentNode); //Selecting parent element
+console.log(h1.parentElement); //Selecting parent element
+
+h1.closest('.header').style.background = 'var(--gradient-secondary)'; //Selecting closest element with class header
+
+h1.closest('h1').style.background = 'var(--gradient-primary)'; //Selecting closest element with class header
+
+//Going sideways: siblings
+console.log(h1.previousElementSibling); //Selecting previous element with class highlight
+console.log(h1.nextElementSibling); //Selecting next element with class highlight
+
+console.log(h1.previousSibling); //Selecting previous element with class highlight
+console.log(h1.nextSibling); //Selecting next element with class highlight
+
+console.log(h1.parentElement.children); //Selecting all children elements of parent element
+[...h1.parentElement.children].forEach(function(el) { //Selecting all children elements of parent element
+  if(el !== h1) el.style.transform = 'scale(0.5)'; //Selecting all children elements of parent element
+});
+*/
+
